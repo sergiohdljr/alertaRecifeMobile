@@ -9,7 +9,7 @@ const Feed = ()=> {
     return(
         <SafeAreaView style={{flex:1,
             padding:20}}>
-           <Text style={{fontSize:12}}> Perfil</Text>
+           <Text style={{fontSize:12}}>Perfil</Text>
             </SafeAreaView>
     );
 }
