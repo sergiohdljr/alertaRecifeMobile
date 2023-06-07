@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     elevation: 6,
     shadowRadius: 4,
-    marginTop: 230,
+    marginTop: 200,
     zIndex: 99,
   },
   actionButton: {
