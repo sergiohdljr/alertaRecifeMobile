@@ -1,5 +1,5 @@
 import { View, SafeAreaView, TouchableOpacity, Text , Image, StyleSheet} from "react-native";
-import { List } from "phosphor-react-native";
+import { List, PencilSimpleLine, Trash } from "phosphor-react-native";
 
 const Perfil = () => {
   return (
@@ -15,6 +15,7 @@ const Perfil = () => {
 
 
     </View>
+
 
     
     </SafeAreaView>
