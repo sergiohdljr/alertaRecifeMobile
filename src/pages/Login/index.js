@@ -1,15 +1,50 @@
-import {View, SafeAreaView, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  Image,
+  TouchableOpacity,
+  Button,
+} from "react-native";
+import logo from "../../../assets/logo_resized.png";
+import { GoogleChromeLogo } from "phosphor-react-native";
 
-
-export default function Login(){
-    return(
-        <SafeAreaView style={{
-            flex:1,
-            backgroundColor:'##8B3DFF',
-            alignItems:'center',
-            justifyContent:'center',
-            flexDirection:'column'}}>
-        
-        </SafeAreaView>
-    );
+export default function Login() {
+  return (
+    <View
+      style={{
+        width: "100%",
+        height: "100vh",
+        backgroundColor: "#E1CCFF",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 3,
+      }}
+    >
+      <Image
+        source={{
+          uri: logo,
+          width: 300,
+          height: 300,
+        }}
+      ></Image>
+      <TouchableOpacity
+        style={{
+          width: "65%",
+          height: "40px",
+          display: "flex",
+          gap: "0.5rem",
+          backgroundColor: "#8B3DFF",
+          flexDirection: "row",
+          justifyContent: 'center',
+          alignItems:'center',
+          borderRadius:'2rem'
+        }}
+      >
+        <GoogleChromeLogo size={24} color="#ffff" />
+        <Text style={{ color: "#ffff" }}>Entre com o Google</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
