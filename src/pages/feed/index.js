@@ -26,6 +26,12 @@ const Feed = () => {
       .then((ocorrencias) => setOcorrencia(ocorrencias.data));
   }, []);
 
+  const deleteOcorrencia = async (idOcorrencia) => {
+    await api
+      .delete(`/delete/ocorrencia/${idOcorrencia}`)
+      .then((deletar) => console.log(deletar.status));
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#a0a0a0a0" }}>
       <BarraPesquisa />
@@ -118,6 +124,7 @@ const Feed = () => {
           ocorrecia.map((ocorrencias) => {
             return (
               <Post
+                id={ocorrencias.id}
                 displayName={ocorrencias.autor.nome}
                 email={ocorrencias.autor.email}
                 photoURL={ocorrencias.autor.fotoPerfil}
@@ -125,6 +132,7 @@ const Feed = () => {
                 descricaoDaOcorrencia={ocorrencias.descricaoDaOcorrencia}
                 enderecoOcorrencia={ocorrencias.enderecoOcorrencia}
                 key={ocorrencias.id}
+                deletarOcorrencia={() => deleteOcorrencia(ocorrencias.id)}
               />
             );
           })}
