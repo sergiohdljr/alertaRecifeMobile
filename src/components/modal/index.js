@@ -15,16 +15,16 @@ import { Warning, X } from "phosphor-react-native";
 export function ActionModal({ handleClose }) {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+
         <TouchableOpacity
-          style={{ flex: 1, zIndex: 9, backgroundColor: "#fff" }}
+          style={{ flex: 1, zIndex: 9, backgroundColor: 'rgb(0,0,0,0.5)' }}
           onPress={handleClose}
-        ></TouchableOpacity>
+        >
+              <View style={styles.content}>
         <View
           style={{
             justifyContent: "flex-start",
-            display: "flex",
-            alignItems: "right",
+            display: "flex"
           }}
         >
           <TouchableOpacity
@@ -34,11 +34,12 @@ export function ActionModal({ handleClose }) {
               display: "flex",
               alignItems: "right",
               alignSelf: "right",
-              marginLeft:200,
-              marginBottom:25
+              marginLeft:220,
+              maginBottom:50
+          
             }}
           >
-            <X size={20} color="black" />
+            <X size={25} color="black" />
           </TouchableOpacity>
         </View>
         <Text
@@ -49,13 +50,17 @@ export function ActionModal({ handleClose }) {
             alignSelf: "center",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: 16,
+            
           }}
         >
           Reporte uma Ocorrência
         </Text>
 
-        <Picker
+      
+
+        <TextInput placeholder='Reporte uma ocorrência' style={styles.input}></TextInput>
+        <TextInput placeholder='Informe a localização' style={styles.TextInputLocalizacao} ></TextInput>
+          <Picker
           style={{
             height: 40,
             width: 140,
@@ -65,7 +70,7 @@ export function ActionModal({ handleClose }) {
             alignItems: "center",
             alignSelf: "center",
             display: "flex",
-            marginBottom: 14,
+            marginTop: 14,
             justifyContent: "center",
 
             fontSize: 15,
@@ -86,8 +91,6 @@ export function ActionModal({ handleClose }) {
           <Picker.Item label="Racismo" value="Racismo" />
         </Picker>
 
-        <TextInput style={styles.input}></TextInput>
-
         <TouchableOpacity>
           <View style={styles.actionButton}>
             <Warning size={22} color="white" />
@@ -104,6 +107,7 @@ export function ActionModal({ handleClose }) {
           </View>
         </TouchableOpacity>
       </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -111,10 +115,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.6)",
+    display:'flex',
+    justifyContent:'center',
+    
+   
+    
+   
   },
   content: {
-    paddingVertical: 80,
-    paddingHorizontal: 40,
+    height:"54%",
+    width: "80%",
     backgroundColor: "#D7BBEC",
     justifyContent: "center",
     alignSelf: "center",
@@ -125,8 +135,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 2, height: 2 },
     elevation: 6,
     shadowRadius: 4,
-    marginTop: 200,
     zIndex: 99,
+    marginTop:180
   },
   actionButton: {
     zIndex: 10,
@@ -144,10 +154,15 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     shadowRadius: 4,
+    marginTop:14,
+    shadowColor: "rgba(0,0,0,0.5)",
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    shadowRadius: 4,
   },
   input: {
-    width: 220,
-    height: 70,
+    width: '80%',
+    height: 85,
     borderColor: "rgba(0,0,0,0.5)",
     backgroundColor: "white",
     borderSize: "4px",
@@ -156,12 +171,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     alignSelf: "center",
-    marginBottom: 10,
+    marginTop: 10,
     display: "flex",
     fontSize: 15,
     shadowColor: "rgba(0,0,0,0.5)",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 2, height: 2 },
     elevation: 5,
     shadowRadius: 4,
+    paddingLeft:5
   },
+  TextInputLocalizacao:{
+    width: '80%',
+    height:35,
+    borderRadius:8,
+    border:'1px solid gray',
+    shadowRadius: 4,
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: { width: 2, height: 2 },
+    elevation: 6,
+    marginTop:5,
+    backgroundColor:'#fff',
+    alignItems:'center',
+    alignSelf:'center',
+    display:'flex',
+    paddingLeft:5
+  }
 });
