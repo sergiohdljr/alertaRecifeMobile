@@ -108,14 +108,6 @@ const Feed = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-
-            <Modal
-              visible={visibleModalEdit}
-              transparent={true}
-              onRequestClose={() => setVisibleModalEdit(false)}
-            >
-              <ActionModalEdit handleClose={() => setVisibleModalEdit(false)} />
-            </Modal>
           </View>
         </View>
       </View>
