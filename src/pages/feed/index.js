@@ -11,7 +11,6 @@ import {
   Modal,
 } from "react-native";
 import { BellRinging } from "phosphor-react-native";
-import { ActionModalEdit } from "../../components/modalEdit";
 import BarraPesquisa from "../../components/barraPesquisa";
 import { Post } from "../../components/post";
 import { api } from "../../service/api";
@@ -19,23 +18,26 @@ import { api } from "../../service/api";
 const Feed = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [ocorrecia, setOcorrencia] = useState();
-
-  useEffect(() => {
+  const getOcorrencia = async () => {
     api
       .get("/ocorrencias")
       .then((ocorrencias) => setOcorrencia(ocorrencias.data));
+  };
+
+  useEffect(() => {
+    getOcorrencia();
   }, []);
 
   const deleteOcorrencia = async (idOcorrencia) => {
-    await api
-      .delete(`/delete/ocorrencia/${idOcorrencia}`)
-      .then((deletar) => console.log(deletar.status));
+    await api.delete(`/delete/ocorrencia/${idOcorrencia}`).then((deletar) => {
+      console.log(deletar.status);
+      getOcorrencia();
+    });
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#a0a0a0a0" }}>
       <BarraPesquisa />
-      {ocorrecia && console.log(ocorrecia)}
       <View style={styles.postOcorrencia}>
         <View style={styles.itensPost}>
           <View style={{ display: "flex", flexDirection: "row" }}>

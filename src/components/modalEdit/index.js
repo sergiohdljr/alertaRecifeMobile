@@ -12,7 +12,7 @@ import {
 
 import { X, Warning } from "phosphor-react-native";
 
-export function ActionModalEdit({ handleClose }) {
+export  function ActionModalEdit({ handleClose }) {
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     display: "flex",
     paddingLeft: 5,
-    marginTop: 10,
-  },
-});
+    marginTop: 10
+  }
+})
