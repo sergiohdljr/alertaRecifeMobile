@@ -1,6 +1,14 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 
 import { PencilSimpleLine, Trash, BellRinging } from "phosphor-react-native";
+import { api } from "../../service/api";
 
 export const Post = ({
   descricaoDaOcorrencia,
@@ -9,6 +17,8 @@ export const Post = ({
   displayName,
   email,
   tipoOcorrencia,
+  id,
+  deletarOcorrencia,
 }) => {
   return (
     <View style={styles.postOcorrencia}>
@@ -43,7 +53,9 @@ export const Post = ({
             <BellRinging size={22} color="red" />
             <Text style={{ color: "red" }}>{tipoOcorrencia}</Text>
             <PencilSimpleLine size={24} color="blue" />
-            <Trash size={24} color="red" />
+            <TouchableOpacity onPress={deletarOcorrencia}>
+              <Trash size={24} color="red" />
+            </TouchableOpacity>
           </View>
         </View>
 
