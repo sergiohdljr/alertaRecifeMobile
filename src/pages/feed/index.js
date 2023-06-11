@@ -127,6 +127,7 @@ const Feed = () => {
                 enderecoOcorrencia={ocorrencias.enderecoOcorrencia}
                 key={ocorrencias.id}
                 deletarOcorrencia={() => deleteOcorrencia(ocorrencias.id)}
+                getOcorrencias={()=> getOcorrencia()}
               />
             );
           })}

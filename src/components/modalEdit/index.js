@@ -11,8 +11,25 @@ import {
 } from "react-native";
 
 import { X, Warning } from "phosphor-react-native";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { api } from "../../service/api";
 
-export  function ActionModalEdit({ handleClose }) {
+export function ActionModalEdit({ handleClose, id, getOcorrencias }) {
+  const { register, setValue, handleSubmit } = useForm();
+  const onSubmit = async (data) => {
+    await api
+      .put(`/edit/${id}`, {
+        descricaoDaOcorrencia: data.descricaoOcorrencia,
+      })
+      .then((ocorrencia) => {
+        console.log(ocorrencia.status);
+        getOcorrencias();
+      });
+  };
+  useEffect(() => {
+    register("descricaoOcorrencia");
+  }, [register]);
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -34,7 +51,7 @@ export  function ActionModalEdit({ handleClose }) {
                 alignItems: "right",
                 alignSelf: "right",
                 marginLeft: 250,
-                marginBottom: 25,
+                marginBottom: 35,
               }}
             >
               <X size={22} color="black" />
@@ -55,8 +72,10 @@ export  function ActionModalEdit({ handleClose }) {
           <TextInput
             placeholder="Edite sua ocorrência"
             style={styles.input}
+            label={"descricaoOcorrencia"}
+            onChangeText={(texto) => setValue("descricaoOcorrencia", texto)}
           ></TextInput>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleSubmit(onSubmit)}>
             <View style={styles.actionButton}>
               <Text
                 style={{
@@ -80,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.6)",
   },
   content: {
-    height: "50%",
+    height: "35%",
     width: "90%",
     backgroundColor: "#D7BBEC",
     justifyContent: "center",
@@ -148,6 +167,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     display: "flex",
     paddingLeft: 5,
-    marginTop: 10
-  }
-})
+    marginTop: 10,
+  },
+});

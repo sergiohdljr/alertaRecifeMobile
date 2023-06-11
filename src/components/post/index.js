@@ -1,3 +1,4 @@
+import{useState} from 'react';
 import {
   View,
   Text,
@@ -5,12 +6,15 @@ import {
   StyleSheet,
   Touchable,
   TouchableOpacity,
+  Modal
 } from "react-native";
 
+import {ActionModalEdit} from "../modalEdit/index";
 import { PencilSimpleLine, Trash, BellRinging } from "phosphor-react-native";
 import { api } from "../../service/api";
 
 export const Post = ({
+  
   descricaoDaOcorrencia,
   enderecoOcorrencia,
   photoURL,
@@ -19,7 +23,9 @@ export const Post = ({
   tipoOcorrencia,
   id,
   deletarOcorrencia,
+  getOcorrencias 
 }) => {
+  const[visibleModalEdit, setVisibleModalEdit]= useState(false);
   return (
     <View style={styles.postOcorrencia}>
       <View style={styles.postItens}>
@@ -50,14 +56,27 @@ export const Post = ({
               gap: "0.5rem",
             }}
           >
+           
             <BellRinging size={22} color="red" />
             <Text style={{ color: "red" }}>{tipoOcorrencia}</Text>
+            <TouchableOpacity onPress={ ()=> setVisibleModalEdit(true)}>   
+
             <PencilSimpleLine size={24} color="blue" />
+            </TouchableOpacity>
+     
             <TouchableOpacity onPress={deletarOcorrencia}>
               <Trash size={24} color="red" />
             </TouchableOpacity>
           </View>
         </View>
+
+        <Modal 
+visible={visibleModalEdit} 
+transparent={true} 
+onRequestClose={ ()=> setVisibleModalEdit(false)} >
+<ActionModalEdit getOcorrencias={getOcorrencias} id={id} handleClose={()=>setVisibleModalEdit(false)}/>
+
+  </Modal>
 
         <View style={styles.textUsuario}>
           <Text style={styles.textNomePost}>{displayName}</Text>
@@ -69,6 +88,7 @@ export const Post = ({
         <Text style={styles.localizacao}>{enderecoOcorrencia}</Text>
       </View>
     </View>
+
   );
 };
 
