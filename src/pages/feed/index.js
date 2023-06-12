@@ -14,10 +14,12 @@ import { BellRinging } from "phosphor-react-native";
 import BarraPesquisa from "../../components/barraPesquisa";
 import { Post } from "../../components/post";
 import { api } from "../../service/api";
+import { useForm } from "react-hook-form";
 
 const Feed = () => {
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [ocorrecia, setOcorrencia] = useState();
+
   const getOcorrencia = async () => {
     api
       .get("/ocorrencias")
@@ -25,14 +27,41 @@ const Feed = () => {
   };
 
   useEffect(() => {
+    register("descricaoDaOcorrencia");
+    register("localizacaoDaOcorrencia");
+    register("tipoDaOcorrencia");
     getOcorrencia();
-  }, []);
+  }, [register]);
 
   const deleteOcorrencia = async (idOcorrencia) => {
     await api.delete(`/delete/ocorrencia/${idOcorrencia}`).then((deletar) => {
       console.log(deletar.status);
       getOcorrencia();
     });
+  };
+
+  const { register, handleSubmit, setValue } = useForm();
+
+  const onSubmit = async (data) => {
+    const dados = {
+      email: "scarllet@gmail.com",
+      nome: "Scarllet Valentim",
+      fotoPerfil: "https://avatars.githubusercontent.com/u/125518211?v=4",
+    };
+
+    await api
+      .post("/ocorrencia", {
+        descricaoDaOcorrencia: data.descricaoDaOcorrencia,
+        tipoDaOcorrencia: data.tipoDaOcorrencia,
+        enderecoOcorrencia: data.localizacaoDaOcorrencia,
+        email: dados.email,
+        nome: dados.nome,
+        fotoPerfil: dados.fotoPerfil,
+      })
+      .then((ocorreciaPost) => {
+        console.log(ocorreciaPost.status);
+        getOcorrencia();
+      });
   };
 
   return (
@@ -45,13 +74,17 @@ const Feed = () => {
             <TextInput
               placeholder="Digite aqui sua ocorrência"
               style={styles.TextInputOcorrencia}
-            ></TextInput>
+              label={"descricaoDaOcorrencia"}
+              onChangeText={(text) => setValue("descricaoDaOcorrencia", text)}
+            />
           </View>
           <View>
             <TextInput
               placeholder="Informe a localização"
               style={styles.TextInputLocalizacao}
-            ></TextInput>
+              label={"localizacaoOcorrencia"}
+              onChangeText={(text) => setValue("localizacaoDaOcorrencia", text)}
+            />
           </View>
           <View
             style={{
@@ -63,6 +96,9 @@ const Feed = () => {
             }}
           >
             <Picker
+              onValueChange={(tipoDaOcorrencia) =>
+                setValue("tipoDaOcorrencia", tipoDaOcorrencia)
+              }
               style={{
                 height: 40,
                 width: 100,
@@ -95,7 +131,7 @@ const Feed = () => {
               <Picker.Item label="Racismo" value="Racismo" />
             </Picker>
 
-            <TouchableOpacity onPress={() => setVisibleModalEdit(true)}>
+            <TouchableOpacity onPress={handleSubmit(onSubmit)}>
               <View style={styles.actionButton}>
                 <BellRinging size={22} color="white" />
                 <Text
@@ -127,7 +163,7 @@ const Feed = () => {
                 enderecoOcorrencia={ocorrencias.enderecoOcorrencia}
                 key={ocorrencias.id}
                 deletarOcorrencia={() => deleteOcorrencia(ocorrencias.id)}
-                getOcorrencias={()=> getOcorrencia()}
+                getOcorrencias={() => getOcorrencia()}
               />
             );
           })}
