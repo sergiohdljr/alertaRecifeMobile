@@ -15,8 +15,12 @@ import BarraPesquisa from "../../components/barraPesquisa";
 import { Post } from "../../components/post";
 import { api } from "../../service/api";
 import { useForm } from "react-hook-form";
+import { UserStore } from "../../store/userStore";
 
 const Feed = () => {
+  const user = UserStore((state) => state.user);
+  const setUser = UserStore((state) => state.addUser);
+
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [ocorrecia, setOcorrencia] = useState();
 
@@ -70,7 +74,12 @@ const Feed = () => {
       <View style={styles.postOcorrencia}>
         <View style={styles.itensPost}>
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <Image style={styles.imagepost}></Image>
+            <Image style={styles.imagepost}
+             source={{
+               uri: user.photoUrl
+             }}
+            ></Image>
+            {console.log(user.email)}
             <TextInput
               placeholder="Digite aqui sua ocorrência"
               style={styles.TextInputOcorrencia}
