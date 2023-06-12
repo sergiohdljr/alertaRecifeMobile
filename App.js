@@ -4,10 +4,10 @@ import { DrawerRoutes } from "./src/routes/drawerRoutes";
 import Login from "./src/pages/Login";
 
 export default function App() {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   return (
     <NavigationContainer>
-      {isLoggedIn ?  <DrawerRoutes /> :<Login />}
+      {isLoggedIn ? <DrawerRoutes /> : <Login />}
     </NavigationContainer>
   );
 }
