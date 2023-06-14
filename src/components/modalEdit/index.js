@@ -18,6 +18,7 @@ import { api } from "../../service/api";
 export function ActionModalEdit({ handleClose, id, getOcorrencias }) {
   const { register, setValue, handleSubmit } = useForm();
   const onSubmit = async (data) => {
+
     await api
       .put(`/edit/${id}`, {
         descricaoDaOcorrencia: data.descricaoOcorrencia,
@@ -25,6 +26,7 @@ export function ActionModalEdit({ handleClose, id, getOcorrencias }) {
       .then((ocorrencia) => {
         console.log(ocorrencia.status);
         getOcorrencias();
+        handleClose();
       });
   };
   useEffect(() => {

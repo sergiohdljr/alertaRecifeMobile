@@ -15,17 +15,21 @@ import { auth, provider } from "../../service/firebase.config";
 import { UserStore } from "../../store/userStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 const Login = () => {
  
   const SignIn = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        console.log({
-          nome: user.displayName,
+        const usuario = {  nome: user.displayName,
           email: user.email,
           foto: user.photoURL,
-        });
+        }
+        localStorage.setItem("usuario",  JSON.stringify(usuario))
+        location.reload()
+
+     
       })
       .catch((error) => {
         console.log(error)
@@ -52,7 +56,7 @@ const Login = () => {
             height: 300,
           }}
         ></Image>
-        {console.log(userDados)}
+        
         <TouchableOpacity
           style={{
             width: "65%",

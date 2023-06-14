@@ -5,10 +5,10 @@ import Login from "./src/pages/Login";
 import { UserStore } from "./src/store/userStore";
 
 export default function App() {
-  const user = UserStore((state) => state.user);
+  const UsuarioAuth = JSON.parse(localStorage.getItem("usuario"));
   return (
     <NavigationContainer>
-      {user === "" ? <DrawerRoutes /> : <Login />}
+      {UsuarioAuth   ? <DrawerRoutes /> : <Login />}
     </NavigationContainer>
   );
 }

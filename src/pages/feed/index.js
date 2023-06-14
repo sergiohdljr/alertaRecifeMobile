@@ -11,18 +11,16 @@ import {
   Modal,
 } from "react-native";
 import { BellRinging } from "phosphor-react-native";
-import BarraPesquisa from "../../components/barraPesquisa";
 import { Post } from "../../components/post";
 import { api } from "../../service/api";
 import { useForm } from "react-hook-form";
 import { UserStore } from "../../store/userStore";
 
 const Feed = () => {
-  const user = UserStore((state) => state.user);
-  const setUser = UserStore((state) => state.addUser);
-
+  const Usuario = JSON.parse(localStorage.getItem("usuario"));
   const [visibleModalEdit, setVisibleModalEdit] = useState(false);
   const [ocorrecia, setOcorrencia] = useState();
+  const [buscar, setBuscar]= useState();
 
   const getOcorrencia = async () => {
     api
@@ -47,39 +45,51 @@ const Feed = () => {
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
-    const dados = {
-      email: "scarllet@gmail.com",
-      nome: "Scarllet Valentim",
-      fotoPerfil: "https://avatars.githubusercontent.com/u/125518211?v=4",
+    const user = {
+      
+      nome: Usuario.nome,
+      email: Usuario.email,
+      fotoPerfil: Usuario.foto,
     };
-
+    
+    
     await api
       .post("/ocorrencia", {
         descricaoDaOcorrencia: data.descricaoDaOcorrencia,
         tipoDaOcorrencia: data.tipoDaOcorrencia,
         enderecoOcorrencia: data.localizacaoDaOcorrencia,
-        email: dados.email,
-        nome: dados.nome,
-        fotoPerfil: dados.fotoPerfil,
+        email: user.email,
+        nome: user.nome,
+        fotoPerfil: user.fotoPerfil,
       })
       .then((ocorreciaPost) => {
         console.log(ocorreciaPost.status);
         getOcorrencia();
-      });
+      }).catch(Error=>console.log(Error) );
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#a0a0a0a0" }}>
-      <BarraPesquisa />
+      <View style={styles.containerbp}>
+      <View style={styles.contentbp}>
+        <TextInput
+          placeholder="Digite uma localização"
+          style={styles.InputPesquisabp}
+          onChangeText={(text)=> setBuscar(text)}
+        ></TextInput>
+    
+      </View>
+    </View>
       <View style={styles.postOcorrencia}>
         <View style={styles.itensPost}>
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <Image style={styles.imagepost}
-             source={{
-               uri: user.photoUrl
-             }}
+            <Image
+              style={styles.imagepost}
+              source={{
+                uri: Usuario.foto,
+              }}
             ></Image>
-            {console.log(user.email)}
+
             <TextInput
               placeholder="Digite aqui sua ocorrência"
               style={styles.TextInputOcorrencia}
@@ -160,22 +170,30 @@ const Feed = () => {
       </View>
       <View>
         {ocorrecia &&
-          ocorrecia.map((ocorrencias) => {
-            return (
-              <Post
-                id={ocorrencias.id}
-                displayName={ocorrencias.autor.nome}
-                email={ocorrencias.autor.email}
-                photoURL={ocorrencias.autor.fotoPerfil}
-                tipoOcorrencia={ocorrencias.tipoDaOcorrencia}
-                descricaoDaOcorrencia={ocorrencias.descricaoDaOcorrencia}
-                enderecoOcorrencia={ocorrencias.enderecoOcorrencia}
-                key={ocorrencias.id}
-                deletarOcorrencia={() => deleteOcorrencia(ocorrencias.id)}
-                getOcorrencias={() => getOcorrencia()}
-              />
-            );
-          })}
+          ocorrecia
+            .slice(0)
+            .reverse()
+            .filter(({ enderecoOcorrencia }) => {
+              const valorBusca = buscar?.toLowerCase();
+              const filtro = enderecoOcorrencia.toLowerCase();
+              return filtro.includes(valorBusca);
+            })
+            .map((ocorrencias) => {
+              return (
+                <Post
+                  id={ocorrencias.id}
+                  displayName={ocorrencias.autor.nome}
+                  email={ocorrencias.autor.email}
+                  photoURL={ocorrencias.autor.fotoPerfil}
+                  tipoOcorrencia={ocorrencias.tipoDaOcorrencia}
+                  descricaoDaOcorrencia={ocorrencias.descricaoDaOcorrencia}
+                  enderecoOcorrencia={ocorrencias.enderecoOcorrencia}
+                  key={ocorrencias.id}
+                  deletarOcorrencia={() => deleteOcorrencia(ocorrencias.id)}
+                  getOcorrencias={() => getOcorrencia()}
+                />
+              );
+            })}
       </View>
     </SafeAreaView>
   );
@@ -265,6 +283,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     marginLeft: 28,
+  },containerbp: {
+    height: 47,
+    width: "100%",
+    backgroundColor: "#D7BBEC",
+  },
+  contentbp: {
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center",
+    marginTop: 6,
+    marginBottom: 1,
+  },
+  InputPesquisabp: {
+    width: "60%",
+    height: 35,
+    backgroundColor: "#fff",
+    borderSize: 1,
+    borderColor: "rgb(0,0,0,0.5)",
+    shadowColor: "rgba(0,0,0,0.6)",
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    shadowRadius: 4,
+    color: "#000",
+    padding: 3,
+    paddingLeft: 6,
+    fontSize: 13,
+    fontWeight: "lighter",
+    borderRadius: 20,
   },
 });
 export default Feed;

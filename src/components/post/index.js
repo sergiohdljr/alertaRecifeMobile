@@ -1,4 +1,4 @@
-import{useState} from 'react';
+import { useState } from "react";
 import {
   View,
   Text,
@@ -6,15 +6,14 @@ import {
   StyleSheet,
   Touchable,
   TouchableOpacity,
-  Modal
+  Modal,
 } from "react-native";
 
-import {ActionModalEdit} from "../modalEdit/index";
+import { ActionModalEdit } from "../modalEdit/index";
 import { PencilSimpleLine, Trash, BellRinging } from "phosphor-react-native";
 import { api } from "../../service/api";
 
 export const Post = ({
-  
   descricaoDaOcorrencia,
   enderecoOcorrencia,
   photoURL,
@@ -23,9 +22,10 @@ export const Post = ({
   tipoOcorrencia,
   id,
   deletarOcorrencia,
-  getOcorrencias 
+  getOcorrencias,
 }) => {
-  const[visibleModalEdit, setVisibleModalEdit]= useState(false);
+  const [visibleModalEdit, setVisibleModalEdit] = useState(false);
+  const Usuario = JSON.parse(localStorage.getItem("usuario"));
   return (
     <View style={styles.postOcorrencia}>
       <View style={styles.postItens}>
@@ -56,27 +56,33 @@ export const Post = ({
               gap: "0.5rem",
             }}
           >
-           
             <BellRinging size={22} color="red" />
             <Text style={{ color: "red" }}>{tipoOcorrencia}</Text>
-            <TouchableOpacity onPress={ ()=> setVisibleModalEdit(true)}>   
+            {Usuario.email === email ?  (
+              <>
+                <TouchableOpacity onPress={() => setVisibleModalEdit(true)}>
+                  <PencilSimpleLine size={24} color="blue" />
+                </TouchableOpacity>
 
-            <PencilSimpleLine size={24} color="blue" />
-            </TouchableOpacity>
-     
-            <TouchableOpacity onPress={deletarOcorrencia}>
-              <Trash size={24} color="red" />
-            </TouchableOpacity>
+                <TouchableOpacity onPress={deletarOcorrencia}>
+                  <Trash size={24} color="red" />
+                </TouchableOpacity>
+              </>
+            ): null  }
           </View>
         </View>
 
-        <Modal 
-visible={visibleModalEdit} 
-transparent={true} 
-onRequestClose={ ()=> setVisibleModalEdit(false)} >
-<ActionModalEdit getOcorrencias={getOcorrencias} id={id} handleClose={()=>setVisibleModalEdit(false)}/>
-
-  </Modal>
+        <Modal
+          visible={visibleModalEdit}
+          transparent={true}
+          onRequestClose={() => setVisibleModalEdit(false)}
+        >
+          <ActionModalEdit
+            getOcorrencias={getOcorrencias}
+            id={id}
+            handleClose={() => setVisibleModalEdit(false)}
+          />
+        </Modal>
 
         <View style={styles.textUsuario}>
           <Text style={styles.textNomePost}>{displayName}</Text>
@@ -88,7 +94,6 @@ onRequestClose={ ()=> setVisibleModalEdit(false)} >
         <Text style={styles.localizacao}>{enderecoOcorrencia}</Text>
       </View>
     </View>
-
   );
 };
 

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -7,17 +8,59 @@ import {
   StyleSheet,
 } from "react-native";
 import { Post } from "../../components/post";
+import { api } from "../../service/api";
 
 const Perfil = () => {
+  const Usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [userOcorrencias, setUserOcorrencias] = useState();
+
+  const getOcorrencia = async () => {
+    api
+      .get(`/ocorrencias/${Usuario.email}`)
+      .then((ocorrencias) => setUserOcorrencias(ocorrencias.data));
+  };
+  useEffect(() => {
+    getOcorrencia();
+    
+  }, []);
+
+  const deleteOcorrencia = async (idOcorrencia) => {
+  await api.delete( `/delete/ocorrencia/${idOcorrencia}`).then((deletar) => {
+      console.log(deletar.status);
+      getOcorrencia();
+    });
+  };
+  
+
+  const OcorrenciasDoUsuario = userOcorrencias?.Ocorrencias.slice(0).reverse();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.perfilHead}>
-        <Image style={styles.image}></Image>
-        <Text style={styles.textNome}>Scarllet Valentim</Text>
-        <Text style={styles.textUser}>@scarlletrvs34</Text>
+        <Image style={styles.image} source={{ uri: Usuario.foto }}></Image>
+        <Text style={styles.textNome}>{Usuario.nome}</Text>
+        <Text style={styles.textUser}>{Usuario.email}</Text>
         <Text style={styles.textOcorrencias}>Suas Ocorrências</Text>
       </View>
-      <Post />
+      <View>
+        {OcorrenciasDoUsuario &&
+          OcorrenciasDoUsuario.map((ocorrencia) => (
+            <Post
+              id={ocorrencia.id}
+              key={ocorrencia.id}
+              descricaoDaOcorrencia={ocorrencia.descricaoDaOcorrencia}
+              fotoOcorrencia={ocorrencia.fotoOcorrencia}
+              displayName={Usuario.nome}
+              email={Usuario.email}
+              photoURL={Usuario.foto}
+              enderecoOcorrencia={ocorrencia.enderecoOcorrencia}
+              tipoOcorrencia={ocorrencia.tipoDaOcorrencia}
+              deletarOcorrencia={() => deleteOcorrencia(ocorrencia.id)}
+              getOcorrencias={() => getOcorrencia()}
+              
+            />
+          ))}
+      </View>
     </SafeAreaView>
   );
 };
@@ -51,13 +94,13 @@ const styles = StyleSheet.create({
   },
   textNome: {
     paddingLeft: 10,
-    fontSize: 17,
+    fontSize: 15,
     fontWeight: "bold",
     paddingTop: 6,
   },
   textUser: {
     paddingLeft: 10,
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "bold",
     color: "#a0a0a0",
   },

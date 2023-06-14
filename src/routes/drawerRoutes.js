@@ -18,9 +18,12 @@ export const DrawerRoutes = () => {
       screenOptions={{
         drawerType: "slide",
         drawerPosition: "right",
+      headerShadowVisible:"true",
+       HeaderShow:"permanent",
         headerStyle: {
           backgroundColor: "#8B3DFF",
           alignItems: "center",
+          
         },
         drawerItemPress: true,
         headerTitleAlign: "center",
@@ -40,9 +43,9 @@ export const DrawerRoutes = () => {
           fontSize: 16,
           fontFamily: "bold",
         },
-      }}
+      }} initialRouteName="Feed"
     >
-      <Drawer.Screen name="Home" component={Home} />
+    
       <Drawer.Screen name="Feed" component={Feed} />
       <Drawer.Screen name="Perfil" component={Perfil} />
     </Drawer.Navigator>

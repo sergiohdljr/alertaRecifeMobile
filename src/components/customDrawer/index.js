@@ -13,7 +13,10 @@ import { SignOut, BellRinging, MoonStars} from "phosphor-react-native";
 
 
 const CustomDrawer = (props) => {
-
+function sair(){
+  localStorage.clear();
+  location.reload();
+}
   const[visibleModal, setVisibleModal]= useState(false);
  
 
@@ -148,7 +151,7 @@ onRequestClose={ ()=> setVisibleModal(false)} >
   </Modal>
         
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={sair}>
           <View
             style={{
               flexDirection: "row",
