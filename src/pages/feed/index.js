@@ -77,7 +77,7 @@ const Feed = () => {
           style={styles.InputPesquisabp}
           onChangeText={(text)=> setBuscar(text)}
         ></TextInput>
-    
+    { ocorrecia && console.log(ocorrecia)  }
       </View>
     </View>
       <View style={styles.postOcorrencia}>
@@ -149,7 +149,6 @@ const Feed = () => {
               <Picker.Item label="Agressão" value="Agressão" />
               <Picker.Item label="Racismo" value="Racismo" />
             </Picker>
-
             <TouchableOpacity onPress={handleSubmit(onSubmit)}>
               <View style={styles.actionButton}>
                 <BellRinging size={22} color="white" />
@@ -171,8 +170,8 @@ const Feed = () => {
       <View>
         {ocorrecia &&
           ocorrecia
-            .slice(0)
-            .reverse()
+              
+            
             .filter(({ enderecoOcorrencia }) => {
               const valorBusca = buscar?.toLowerCase();
               const filtro = enderecoOcorrencia.toLowerCase();

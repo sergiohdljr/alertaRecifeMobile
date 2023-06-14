@@ -18,8 +18,7 @@ export const DrawerRoutes = () => {
       screenOptions={{
         drawerType: "slide",
         drawerPosition: "right",
-      headerShadowVisible:"true",
-       HeaderShow:"permanent",
+      
         headerStyle: {
           backgroundColor: "#8B3DFF",
           alignItems: "center",
