@@ -54,7 +54,7 @@ export function ActionModal({ handleClose }) {
         getOcorrencia();
       }).catch(Error=>console.log(Error) );
       handleClose();
-      location.reload()
+     
   };
 
   return (
