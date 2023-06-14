@@ -26,6 +26,7 @@ const Feed = () => {
     api
       .get("/ocorrencias")
       .then((ocorrencias) => setOcorrencia(ocorrencias.data));
+    
   };
 
   useEffect(() => {
@@ -39,12 +40,14 @@ const Feed = () => {
     await api.delete(`/delete/ocorrencia/${idOcorrencia}`).then((deletar) => {
       console.log(deletar.status);
       getOcorrencia();
+      location.reload()
     });
   };
 
   const { register, handleSubmit, setValue } = useForm();
 
   const onSubmit = async (data) => {
+  
     const user = {
       
       nome: Usuario.nome,
@@ -77,7 +80,7 @@ const Feed = () => {
           style={styles.InputPesquisabp}
           onChangeText={(text)=> setBuscar(text)}
         ></TextInput>
-    { ocorrecia && console.log(ocorrecia)  }
+   
       </View>
     </View>
       <View style={styles.postOcorrencia}>
@@ -168,16 +171,16 @@ const Feed = () => {
         </View>
       </View>
       <View>
-        {ocorrecia &&
-          ocorrecia
-              
+        {ocorrecia    && 
+          ocorrecia.filter(({ enderecoOcorrencia }) => {
+            const valorBusca = buscar?.toLowerCase();
+            const filtro = enderecoOcorrencia.toLowerCase();
+            return filtro.includes(valorBusca);
+          })
+          .slice(0)
+          .reverse()
+          .map((ocorrencias) => {
             
-            .filter(({ enderecoOcorrencia }) => {
-              const valorBusca = buscar?.toLowerCase();
-              const filtro = enderecoOcorrencia.toLowerCase();
-              return filtro.includes(valorBusca);
-            })
-            .map((ocorrencias) => {
               return (
                 <Post
                   id={ocorrencias.id}
@@ -192,7 +195,7 @@ const Feed = () => {
                   getOcorrencias={() => getOcorrencia()}
                 />
               );
-            })}
+            }) }
       </View>
     </SafeAreaView>
   );

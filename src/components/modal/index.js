@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   View,
   SafeAreaView,
@@ -11,8 +12,51 @@ import {
 } from "react-native";
 
 import { Warning, X } from "phosphor-react-native";
+import { api } from "../../service/api";
+import { useForm } from "react-hook-form";
+
+
+
+
 
 export function ActionModal({ handleClose }) {
+
+
+  useEffect(() => {
+    register("descricaoDaOcorrencia");
+    register("localizacaoDaOcorrencia");
+    register("tipoDaOcorrencia");
+  }, [register]);
+
+  const Usuario = JSON.parse(localStorage.getItem("usuario"));
+  const { register, handleSubmit, setValue } = useForm();
+
+  const onSubmit = async (data) => {
+    const user = {
+      
+      nome: Usuario.nome,
+      email: Usuario.email,
+      fotoPerfil: Usuario.foto,
+    };
+    
+    
+    await api
+      .post("/ocorrencia", {
+        descricaoDaOcorrencia: data.descricaoDaOcorrencia,
+        tipoDaOcorrencia: data.tipoDaOcorrencia,
+        enderecoOcorrencia: data.localizacaoDaOcorrencia,
+        email: user.email,
+        nome: user.nome,
+        fotoPerfil: user.fotoPerfil,
+      })
+      .then((ocorreciaPost) => {
+        console.log(ocorreciaPost.status);
+        getOcorrencia();
+      }).catch(Error=>console.log(Error) );
+      handleClose();
+      location.reload()
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -55,10 +99,15 @@ export function ActionModal({ handleClose }) {
           <TextInput
             placeholder="Reporte uma ocorrência"
             style={styles.input}
+            label={"descricaoDaOcorrencia"}
+            onChangeText={(text) => setValue("descricaoDaOcorrencia", text)}
           ></TextInput>
           <TextInput
             placeholder="Informe a localização"
-            style={styles.TextInputLocalizacao}
+            style={styles.TextInputLocalizacao
+            }
+            label={"localizacaoOcorrencia"}
+            onChangeText={(text) => setValue("localizacaoDaOcorrencia", text)}
           ></TextInput>
           <Picker
             style={{
@@ -79,6 +128,9 @@ export function ActionModal({ handleClose }) {
               elevation: 5,
               shadowRadius: 4,
             }}
+            onValueChange={(tipoDaOcorrencia) =>
+              setValue("tipoDaOcorrencia", tipoDaOcorrencia)
+            }
           >
             <Picker.Item label="Assalto" value="Assalto" />
             <Picker.Item label="Assédio" value="Assédio" />
@@ -101,6 +153,7 @@ export function ActionModal({ handleClose }) {
                   color: "#fff",
                   marginLeft: 4,
                 }}
+                onPress={handleSubmit(onSubmit)}
               >
                 Reportar
               </Text>
