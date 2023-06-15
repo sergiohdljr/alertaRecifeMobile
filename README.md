@@ -17,7 +17,7 @@ Como rodar o projeto na sua máquina
 ### 2. Instale as dependências
 
 ```bash
-  cd AlertaRecifeBackMobile/
+  cd AlertaRecifeMobile/
   npm install
 ```
 
